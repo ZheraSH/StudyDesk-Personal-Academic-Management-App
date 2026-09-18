@@ -1,0 +1,45 @@
+# Virtual Environment
+.venv/
+venv/
+env/
+ENV/
+
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyo
+
+# Flet & Flutter Build Artifacts
+build/
+dist/
+*.egg-info/
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/
+
+# Temporary / Scratch scripts & files
+scratch/
+patch_*.py
+
+# Test & Coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Local Database & User Data
+*.db
+*.sqlite3
+logs/
+attachments/
+backups/
+
+# IDE & Editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS Generated
+.DS_Store
+Thumbs.db
