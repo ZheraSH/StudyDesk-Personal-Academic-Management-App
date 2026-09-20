@@ -54,3 +54,67 @@ jobs:
             build/**/*.apk
             dist/**/*.apk
           if-no-files-found: error
+
+  build-windows:
+    name: Build StudyDesk Windows EXE
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install "flet>=1.0.0" pyinstaller
+          pip install -r requirements.txt
+
+      - name: Build Windows EXE with PyInstaller
+        shell: powershell
+        run: |
+          pyinstaller `
+            --name "StudyDesk" `
+            --onedir `
+            --windowed `
+            --add-data "src;src" `
+            --hidden-import "flet" `
+            --hidden-import "flet_desktop" `
+            --hidden-import "sqlalchemy" `
+            --hidden-import "sqlalchemy.dialects.sqlite" `
+            --hidden-import "plyer" `
+            --hidden-import "tzdata" `
+            --hidden-import "zoneinfo" `
+            --icon "src/assets/icon.ico" `
+            main.py 2>&1 || pyinstaller `
+            --name "StudyDesk" `
+            --onedir `
+            --windowed `
+            --add-data "src;src" `
+            --hidden-import "flet" `
+            --hidden-import "flet_desktop" `
+            --hidden-import "sqlalchemy" `
+            --hidden-import "sqlalchemy.dialects.sqlite" `
+            --hidden-import "plyer" `
+            --hidden-import "tzdata" `
+            --hidden-import "zoneinfo" `
+            main.py
+
+      - name: Package Windows Build into ZIP
+        shell: powershell
+        run: |
+          Compress-Archive -Path "dist\StudyDesk" -DestinationPath "StudyDesk-Windows.zip"
+          Write-Host "=== Windows Build Contents ==="
+          Get-ChildItem -Path "dist\StudyDesk" | Select-Object Name, Length
+
+      - name: Upload Windows Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: StudyDesk-Windows-Installer
+          path: StudyDesk-Windows.zip
+          if-no-files-found: error
