@@ -1,5 +1,5 @@
 # StudyDesk Dependencies
-flet>=0.24.0
+flet>=1.0.0
 sqlalchemy>=2.0.0
 python-dateutil>=2.9.0
 appdirs>=1.4.4
